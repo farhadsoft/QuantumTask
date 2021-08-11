@@ -1,0 +1,25 @@
+﻿@page "/"
+
+<table class="table table-sm table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th><th>Title</th><th>Text</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var note in Notes)
+        {
+            <tr>
+                <td>@note.Id</td>
+                <td>@note.Title</td>
+                <td>@note.NoteText</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    [Inject]
+    public NoteContext Context { get; set; }
+    public IEnumerable<Note> Notes => Context.Notes;
+}
