@@ -6,7 +6,6 @@
     <button class="btn btn-primary my-2 my-sm-0" type="submit">New Note</button>
     <form class="form-inline my-2 my-lg-0">
         <input class="form-control mr-sm-4" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
     </form>
 </nav>
 
@@ -27,29 +26,33 @@ else
                     <InputTextArea class="form-control" @bind-Value="note.NoteText" />
                 </div>
             </div>
-            <button class="btn btn-primary" @onclick="Create">Click</button>
+            <button class="btn btn-primary" @onclick="Create">Create a new note</button>
         </div>
     </EditForm>
 
     @foreach (var note in Notes)
     {
-        <div class="card">
-            <div class="card-header row">
-                <div class="col-4">
-                    @note.Title
-                </div>
-                <div class="col-4 text-center">
-                    @note.Created
-                </div>
-                <div class="col-4 text-right">
-                    <button class="btn btn-primary">View note</button>
-                    <button class="btn btn-secondary" @onclick="() => Edit(note)">Edit note</button>
-                </div>
+    <div class="card">
+        <div class="card-header row">
+            <div class="col-4">
+                @note.Title
             </div>
+            <div class="col-4 text-center">
+                Created @(DateTime.Now.Day - note.Created.Day) day(s) ago
+            </div>
+            <div class="col-4 text-right">
+                <input type="submit" class="btn btn-primary" @onclick="() => ShowEditor(note.Id)" value="@buttonLabel" />
+                <button class="btn btn-secondary" @onclick="() => Edit(note)">Edit note</button>
+            </div>
+        </div>
+        @if (note.Id == editId)
+        {
             <div class="card-body">
                 <textarea class="form-control" @bind="@note.NoteText"></textarea>
             </div>
-        </div>
+        }
+
+    </div>
     }
 }
 
@@ -58,6 +61,8 @@ else
     private IEnumerable<Note> Notes;
 
     private Note note = new Note();
+    private int? editId = default;
+    public string buttonLabel { get; set; } = "View note";
 
     protected override async Task OnInitializedAsync()
     {
@@ -74,5 +79,19 @@ else
     private void Edit(Note note)
     {
         noteRepository.Edit(note);
+    }
+
+    private void ShowEditor(int id)
+    {
+        if (editId == id)
+        {
+            editId = default;
+            buttonLabel = "View note";
+        }
+        else
+        {
+            editId = id;
+            buttonLabel = "Hide note";
+        }
     }
 }
