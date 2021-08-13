@@ -1,25 +1,78 @@
 ﻿@page "/"
+@using QuantumTask.Data
+@inject EFNoteRepository noteRepository
 
-<table class="table table-sm table-bordered">
-    <thead>
-        <tr>
-            <th>ID</th><th>Title</th><th>Text</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var note in Notes)
-        {
-            <tr>
-                <td>@note.Id</td>
-                <td>@note.Title</td>
-                <td>@note.NoteText</td>
-            </tr>
-        }
-    </tbody>
-</table>
+<nav class="navbar navbar-light bg-light">
+    <button class="btn btn-primary my-2 my-sm-0" type="submit">New Note</button>
+    <form class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-4" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+</nav>
+
+@if (Notes is null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <EditForm Model="note" OnValidSubmit="Create">
+        <DataAnnotationsValidator />
+        <div class="card">
+            <div class="card-header">
+                <InputText class="form-control" @bind-Value="note.Title" />
+            </div>
+            <div class="card-body">
+                <div class="input-group">
+                    <InputTextArea class="form-control" @bind-Value="note.NoteText" />
+                </div>
+            </div>
+            <button class="btn btn-primary" @onclick="Create">Click</button>
+        </div>
+    </EditForm>
+
+    @foreach (var note in Notes)
+    {
+        <div class="card">
+            <div class="card-header row">
+                <div class="col-4">
+                    @note.Title
+                </div>
+                <div class="col-4 text-center">
+                    @note.Created
+                </div>
+                <div class="col-4 text-right">
+                    <button class="btn btn-primary">View note</button>
+                    <button class="btn btn-secondary" @onclick="() => Edit(note)">Edit note</button>
+                </div>
+            </div>
+            <div class="card-body">
+                <textarea class="form-control" @bind="@note.NoteText"></textarea>
+            </div>
+        </div>
+    }
+}
+
 
 @code {
-    [Inject]
-    public NoteContext Context { get; set; }
-    public IEnumerable<Note> Notes => Context.Notes;
+    private IEnumerable<Note> Notes;
+
+    private Note note = new Note();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Notes = await Task.Run(() => noteRepository.Notes);
+    }
+
+    private void Create()
+    {
+        note.Created = DateTime.Now;
+        noteRepository.Create(note);
+        note = new Note();
+    }
+
+    private void Edit(Note note)
+    {
+        noteRepository.Edit(note);
+    }
 }

@@ -2,9 +2,9 @@
 
 namespace QuantumTask.Data
 {
-    public class NoteContext : DbContext
+    public class DataContext : DbContext
     {
-        public NoteContext(DbContextOptions<NoteContext> options) : base(options) { }
+        public DataContext(DbContextOptions<DataContext> options) : base(options) { }
 
         public DbSet<Note> Notes { get; set; }
     }

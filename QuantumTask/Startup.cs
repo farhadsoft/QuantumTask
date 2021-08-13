@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using QuantumTask.Data;
 
@@ -21,23 +19,17 @@ namespace QuantumTask
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddDbContext<NoteContext>(options =>
+            services.AddDbContext<DataContext>(options =>
             {
-                options.UseNpgsql(Configuration["ConnectionStrings:QuantumConnection"]);
+                options.UseNpgsql(Configuration.GetConnectionString("QuantumConnection"));
             });
+            services.AddScoped<INoteRepository, EFNoteRepository>();
+            services.AddTransient<EFNoteRepository>();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, DataContext context)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Error");
-                app.UseHsts();
-            }
+            app.UseDeveloperExceptionPage();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

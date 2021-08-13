@@ -9,8 +9,8 @@ using QuantumTask.Data;
 
 namespace QuantumTask.Migrations
 {
-    [DbContext(typeof(NoteContext))]
-    [Migration("20210811190901_Initial")]
+    [DbContext(typeof(DataContext))]
+    [Migration("20210813045431_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,35 +28,20 @@ namespace QuantumTask.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<string>("Created")
-                        .HasColumnType("text");
-
-                    b.Property<int?>("NoteId")
-                        .HasColumnType("integer");
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("NoteText")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Title")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("NoteId");
-
                     b.ToTable("Notes");
-                });
-
-            modelBuilder.Entity("QuantumTask.Data.Note", b =>
-                {
-                    b.HasOne("QuantumTask.Data.Note", null)
-                        .WithMany("Notes")
-                        .HasForeignKey("NoteId");
-                });
-
-            modelBuilder.Entity("QuantumTask.Data.Note", b =>
-                {
-                    b.Navigation("Notes");
                 });
 #pragma warning restore 612, 618
         }

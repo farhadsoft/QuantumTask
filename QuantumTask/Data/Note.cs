@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace QuantumTask.Data
@@ -7,10 +7,10 @@ namespace QuantumTask.Data
     {
         [Key]
         public int Id { get; set; }
+        [Required]
         public string Title { get; set; }
+        [Required]
         public string NoteText { get; set; }
-        public string Created { get; set; }
-
-        public IEnumerable<Note> Notes { get; set; }
+        public DateTime Created { get; set; }
     }
 }
