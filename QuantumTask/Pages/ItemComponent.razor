@@ -1,0 +1,30 @@
+﻿<div>
+    <div class="card-header row">
+        <div class="col-4">
+            @Title
+        </div>
+        <div class="col-4 text-center">
+            Created @Day day(s) ago
+        </div>
+        <div class="col-4 text-right">
+            @ButtonFragment
+        </div>
+    </div>
+    <div class="card-body">
+        @NoteTextFragment
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+    public int Day { get; set; }
+
+    [Parameter]
+    public RenderFragment ButtonFragment { get; set; }
+
+    [Parameter]
+    public RenderFragment NoteTextFragment { get; set; }
+}
