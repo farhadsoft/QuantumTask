@@ -7,7 +7,7 @@
     <form class="input-group col-md-8">
         <input class="form-control" type="text" placeholder="Search" @bind-value="SearchTerm" @bind-value:event="oninput" />
     </form>
-    <label class="text-body col-2">Total notes: </label>
+    <label class="text-body col-2">Total notes: @TotalNotes</label>
 </nav>
 
 @if (edit)

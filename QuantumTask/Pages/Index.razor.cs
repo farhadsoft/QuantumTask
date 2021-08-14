@@ -10,19 +10,21 @@ namespace QuantumTask.Pages
     {
         private IEnumerable<Note> Notes;
 
-        protected Note note = new Note();
+        protected Note note = new();
         protected int? editId = default;
         protected bool edit = false;
         protected string SearchTerm { get; set; } = "";
+        protected int TotalNotes { get; set; } = 0;
 
         protected override async Task OnInitializedAsync()
         {
             Notes = await Task.Run(() => noteRepository.Notes.Where(x => x.NoteText.Contains(SearchTerm) || x.Title.Contains(SearchTerm)));
+            TotalNotes = Notes.Count();
         }
 
-        protected override Task OnParametersSetAsync()
+        protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            return base.OnParametersSetAsync();
+            TotalNotes = await Task.Run(() => noteRepository.Notes.Count());
         }
 
         protected void Create()
