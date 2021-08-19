@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace QuantumTask.Pages
 {
@@ -16,15 +15,16 @@ namespace QuantumTask.Pages
         protected string SearchTerm { get; set; } = "";
         protected int TotalNotes { get; set; } = 0;
 
-        protected override async Task OnInitializedAsync()
+        protected override void OnInitialized()
         {
-            Notes = await Task.Run(() => noteRepository.Notes.Where(x => x.NoteText.Contains(SearchTerm) || x.Title.Contains(SearchTerm)));
+            Notes = noteRepository.Notes.Where(x => x.NoteText.Contains(SearchTerm) || x.Title.Contains(SearchTerm))
+                    .OrderByDescending(x => x.Created);
             TotalNotes = Notes.Count();
         }
 
-        protected override async Task OnAfterRenderAsync(bool firstRender)
+        protected override void OnAfterRender(bool firstRender)
         {
-            TotalNotes = await Task.Run(() => noteRepository.Notes.Count());
+            TotalNotes = noteRepository.Notes.Count();
         }
 
         protected void Create()

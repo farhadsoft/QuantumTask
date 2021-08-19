@@ -23,7 +23,6 @@ namespace QuantumTask
             {
                 options.UseNpgsql(Configuration.GetConnectionString("QuantumConnection"));
             });
-            services.AddScoped<INoteRepository, EFNoteRepository>();
             services.AddTransient<EFNoteRepository>();
         }
 
