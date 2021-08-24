@@ -1,4 +1,5 @@
-﻿using QuantumTask.Data;
+﻿using Microsoft.AspNetCore.Components;
+using QuantumTask.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,8 +8,9 @@ namespace QuantumTask.Pages
 {
     public partial class Index
     {
+        [Inject]
+        INoteRepository NoteRepository { get; set; }
         private IEnumerable<Note> Notes;
-
         protected Note note = new();
         protected int? editId = default;
         protected bool edit = false;
@@ -17,26 +19,26 @@ namespace QuantumTask.Pages
 
         protected override void OnInitialized()
         {
-            Notes = noteRepository.Notes.Where(x => x.NoteText.Contains(SearchTerm) || x.Title.Contains(SearchTerm))
+            Notes = NoteRepository.Notes.Where(x => x.NoteText.Contains(SearchTerm) || x.Title.Contains(SearchTerm))
                     .OrderByDescending(x => x.Created);
             TotalNotes = Notes.Count();
         }
 
         protected override void OnAfterRender(bool firstRender)
         {
-            TotalNotes = noteRepository.Notes.Count();
+            TotalNotes = NoteRepository.Notes.Count();
         }
 
         protected void Create()
         {
             note.Created = DateTime.Now;
-            noteRepository.Create(note);
+            NoteRepository.Create(note);
             note = new Note();
         }
 
         protected void Edit(Note note)
         {
-            noteRepository.Edit(note);
+            NoteRepository.Edit(note);
         }
 
         protected void ShowEditForm()

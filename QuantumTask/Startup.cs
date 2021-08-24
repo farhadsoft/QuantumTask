@@ -23,13 +23,11 @@ namespace QuantumTask
             {
                 options.UseNpgsql(Configuration.GetConnectionString("QuantumConnection"));
             });
-            services.AddTransient<EFNoteRepository>();
+            services.AddScoped<INoteRepository, EFNoteRepository>();
         }
 
         public void Configure(IApplicationBuilder app, DataContext context)
         {
-            app.UseDeveloperExceptionPage();
-
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
