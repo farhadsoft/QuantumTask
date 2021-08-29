@@ -35,8 +35,7 @@
 }
 else
 {
-    @foreach (var note in Notes)
-    {
+    <Virtualize Items="Notes" Context="note">
         @if (note.Id == editId)
         {
             <ItemComponent Title="@note.Title" Day="@(DateTime.Now.Day - note.Created.Day)">
@@ -58,5 +57,5 @@ else
                 </ButtonFragment>
             </ItemComponent>
         }
-    }
+    </Virtualize>
 }

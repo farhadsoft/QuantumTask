@@ -10,7 +10,7 @@ namespace QuantumTask.Pages
     {
         [Inject]
         INoteRepository NoteRepository { get; set; }
-        private IEnumerable<Note> Notes;
+        protected List<Note> Notes;
         protected Note note = new();
         protected int? editId = default;
         protected bool edit = false;
@@ -20,8 +20,8 @@ namespace QuantumTask.Pages
         protected override void OnInitialized()
         {
             Notes = NoteRepository.Notes.Where(x => x.NoteText.Contains(SearchTerm) || x.Title.Contains(SearchTerm))
-                    .OrderByDescending(x => x.Created);
-            TotalNotes = Notes.Count();
+                    .OrderByDescending(x => x.Created).ToList();
+            TotalNotes = Notes.Count;
         }
 
         protected override void OnAfterRender(bool firstRender)
