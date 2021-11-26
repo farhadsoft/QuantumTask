@@ -29,6 +29,13 @@ namespace QuantumTask.Pages
             TotalNotes = NoteRepository.Notes.Count();
         }
 
+        protected int CreatedDayCalc(DateTime createDate)
+        {
+            TimeSpan timeSpan = DateTime.Now.Subtract(createDate);
+            int days = Convert.ToInt32(timeSpan.TotalDays);
+            return days;
+        }
+
         protected void Create()
         {
             note.Created = DateTime.Now;

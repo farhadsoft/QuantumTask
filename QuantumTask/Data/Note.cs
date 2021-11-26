@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace QuantumTask.Data
@@ -13,5 +14,7 @@ namespace QuantumTask.Data
         [Required]
         public string NoteText { get; set; }
         public DateTime Created { get; set; }
+
+        public virtual List<Note> Notes { get; set; }
     }
 }

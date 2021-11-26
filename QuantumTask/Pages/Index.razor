@@ -38,7 +38,7 @@ else
     <Virtualize Items="Notes" Context="note">
         @if (note.Id == editId)
         {
-            <ItemComponent Title="@note.Title" Day="@(DateTime.Now.Day - note.Created.Day)">
+            <ItemComponent Title="@note.Title" Day="@(CreatedDayCalc(note.Created))">
                 <ButtonFragment>
                     <input type="submit" class="btn btn-primary" @onclick="() => ShowEditor(note.Id)" value="Hide note" />
                     <button class="btn btn-warning" @onclick="() => Edit(note)">Edit note</button>

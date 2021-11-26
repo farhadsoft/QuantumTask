@@ -1,18 +1,25 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace QuantumTask.Data
 {
     public class EFNoteRepository : INoteRepository
     {
-        private DataContext context; 
+        private readonly DataContext context; 
         public EFNoteRepository(DataContext context)
         {
+            if (context is null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
             this.context = context;
         }
         /// <summary>
         /// Get all notes from data storage.
         /// </summary>
-        public IQueryable<Note> Notes => context.Notes;
+        public IEnumerable<Note> Notes => context.Notes;
 
         /// <summary>
         /// Create a new note.
@@ -20,8 +27,8 @@ namespace QuantumTask.Data
         /// <param name="note">New note</param>
         public void Create(Note note)
         {
-            context.Add(note);
-            context.SaveChanges();
+            context.Notes.Add(note);
+            SaveChanges(context);
         }
 
         /// <summary>
@@ -30,8 +37,13 @@ namespace QuantumTask.Data
         /// <param name="note">Selected note</param>
         public void Edit(Note note)
         {
-            context.Update(note);
-            context.SaveChanges();
+            context.Notes.Update(note);
+            SaveChanges(context);
+        }
+
+        public void SaveChanges(DataContext context)
+        {
+            ((DataContext)context).SaveChanges();
         }
     }
 }

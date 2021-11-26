@@ -6,6 +6,6 @@ namespace QuantumTask.Data
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
 
-        public DbSet<Note> Notes { get; set; }
+        public virtual DbSet<Note> Notes { get; set; }
     }
 }

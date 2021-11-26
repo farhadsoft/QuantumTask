@@ -1,11 +1,13 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace QuantumTask.Data
 {
     public interface INoteRepository
     {
-        IQueryable<Note> Notes { get; }
+        IEnumerable<Note> Notes { get; }
         public void Create(Note note);
         public void Edit(Note note);
+        public void SaveChanges(DataContext context);
     }
 }

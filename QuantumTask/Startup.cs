@@ -19,11 +19,11 @@ namespace QuantumTask
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
+            services.AddScoped<INoteRepository, EFNoteRepository>();
             services.AddDbContext<DataContext>(options =>
             {
-                options.UseNpgsql(Configuration.GetConnectionString("QuantumConnection"));
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
-            services.AddScoped<INoteRepository, EFNoteRepository>();
         }
 
         public void Configure(IApplicationBuilder app, DataContext context)
